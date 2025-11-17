@@ -1,11 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function POST(req) {
+export async function POST(req : NextRequest) {
   const form = await req.formData();
 
   const phone = form.get("phone");
-  const confirm = form.get("confirm");
-  const image = form.get("image"); // File ảnh
+  const confirm = form.get("confirm") === "true";
+  const image = form.get("image") as File | null;
+
 
   console.log("Phone:", phone);
   console.log("Confirm:", confirm);

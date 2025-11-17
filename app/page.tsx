@@ -6,13 +6,16 @@ import { useState } from "react";
 export default function Home() {
   const [phone, setPhone] = useState("");
   const [confirm, setConfirm] = useState(false);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
+
 
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("phone", phone);
-    formData.append("confirm", confirm);
-    formData.append("image", image);
+    formData.append("confirm", confirm ? "true" : "false");
+    if (image) {
+      formData.append("image", image);
+    }
 
     const res = await fetch("/api/save-data", {
       method: "POST",
@@ -48,7 +51,7 @@ export default function Home() {
         type="file"
         accept="image/*"
         capture="environment"
-        onChange={(e) => setImage(e.target.files[0])}
+        onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
       />
 
       <button
